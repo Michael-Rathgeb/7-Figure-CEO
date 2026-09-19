@@ -14,7 +14,7 @@ Run from `~/agents/<run>/` on the host. No step here is interactive unless marke
      provider: openai-codex
      base_url: https://chatgpt.com/backend-api/codex
    ```
-   Confirm `data/auth.json` exists and is mode 600. Never print it. `auth add` writes only the auth store; it does **not** touch `config.yaml` (verified 2026-09-19), so the model block above is always needed.
+   Confirm `data/auth.json` exists and is mode 600. Never print it. When the login completes, **end the terminal session and verify no `docker-compose` client is left running** on the host (rules.md 14); the client has been seen spinning at full CPU after the container exited. `auth add` writes only the auth store; it does **not** touch `config.yaml` (verified 2026-09-19), so the model block above is always needed.
 2c. **Config version marker.** The first run copies the image's example `config.yaml`, which carries no `_config_version`, and the gateway then warns that the config "predates version 12" and cannot be auto-migrated. Fix it with Hermes' own tool once the container is up: `docker compose exec -T hermes hermes config migrate`, then `docker compose restart hermes` and confirm the `config-migrate` warning is gone from the logs. (`hermes config check` shows the state first.)
 3. **Start.** `docker compose up -d`
 4. **Watch the first minute.** `docker compose logs -f hermes` with the person. You want to see: the gateway starting, the dashboard listening on 9119, the platform (Telegram or Discord) connecting. Stop watching with Ctrl-C; the container keeps running.

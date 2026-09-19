@@ -22,3 +22,6 @@ Read before every stage. These override anything a card or a doc page says.
 11. A stage is done when its Human check happened, not when the commands exited zero.
 12. If a card disagrees with what the software actually does, the software wins. Read the `docs:` link in the card, fix the card, note the fix in the deploy log, continue.
 13. Report failures with the exact error text in a code block. Never say "should work".
+
+## Leave nothing running
+14. After any interactive step you ran through a terminal (`docker compose run`, device-code logins, `ssh -tt`), check the host for leftover clients: `ps -eo pid,user,pcpu,etime,comm --sort=-pcpu | head`. Seen 2026-09-19: two `docker-compose run` clients kept spinning at 240% CPU for hours after their containers had exited, the `timeout` wrapper did not stop them, and the host tripped the provider's resource alarm. Kill the whole session tree (the `ssh`/`bash`/`timeout`/`docker` chain), then confirm `uptime` load is below the core count and `docker ps -a` shows no `*-run-*` containers.

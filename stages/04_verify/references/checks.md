@@ -11,6 +11,7 @@ Run from the stack folder on the host (`~/agents/<run>/`). Prefix with `ssh <ssh
 - **Restart policy:** `docker inspect -f '{{.HostConfig.RestartPolicy.Name}}' <container>` prints `unless-stopped`.
 - **Survives restart:** on Linux `sudo systemctl restart docker`; on Mac quit and relaunch OrbStack or Docker Desktop. Wait 60 s. `docker compose ps` shows everything back.
 - **Backup exists** (if chosen): `ls backups/` shows one dated archive from the deploy stage.
+- **Nothing left spinning:** `cat /proc/loadavg` first number below `nproc`; `ps -eo pcpu,etime,comm --sort=-pcpu | head -5` shows no `docker-compose` or `docker` client process; `docker ps -a` shows no `*-run-*` containers. Leftover interactive clients have pegged a host at 100% for hours (rules.md 14).
 
 ## Hermes
 - **Gateway alive:** `docker compose logs --tail 50 hermes` shows the gateway started and the chosen platform connected, no repeated tracebacks.
