@@ -1,0 +1,5 @@
+# Filled by 02_assemble. <domain> = the person's domain. <upstream> = hermes:9119 or openclaw-gateway:18789
+<domain> {
+    encode zstd gzip
+    reverse_proxy <upstream>
+}

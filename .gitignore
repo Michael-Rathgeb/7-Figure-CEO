@@ -1,0 +1,13 @@
+# Run outputs are state and stay in the repo, except the one file that holds secrets.
+stages/*/output/*/stack/.env
+stages/*/output/*/stack/.env.*
+stages/*/output/*/stack/data/
+stages/*/output/*/stack/backups/
+.DS_Store
+stages/*/output/*/your-agent.md
+
+# Run outputs stay on the machine that made them. They name real servers, bots and people.
+# Un-ignore in a private fork if you want your own runs versioned.
+stages/*/output/*
+!stages/*/output/.gitkeep
+.playwright-mcp/

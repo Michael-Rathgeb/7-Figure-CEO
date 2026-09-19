@@ -1,0 +1,15 @@
+# Merge this service into the agent's docker-compose.yml when access: domain.
+services:
+  caddy:
+    image: caddy:2-alpine
+    pull_policy: always
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data/caddy/data:/data
+      - ./data/caddy/config:/config
