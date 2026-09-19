@@ -6,6 +6,7 @@
 - Chat: <bot handle> on <Telegram | Discord>. Only your account is allowed. To add someone, tell your coding agent "let <name> message my agent".
 - Dashboard: <ui_url>. Works from any device signed in to your Tailscale account.
   - Login: <user / password or token, and where to paste it>
+  - OpenClaw only: the first time a new device opens the UI, tell your coding agent "approve my device".
 
 ## What it runs on
 - <agent> on <host description>, deployed <date>.

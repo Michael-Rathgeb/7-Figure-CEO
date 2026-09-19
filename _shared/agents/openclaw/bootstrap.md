@@ -39,7 +39,12 @@ Run from `~/agents/<run>/` on the host. Onboarding runs through the gateway serv
 7. **Watch the first minute.** `docker compose logs -f openclaw-gateway` with the person. You want: migrations done, channels connected, healthcheck turning `healthy` in `docker compose ps`.
 8. **Health.** `curl -fsS http://127.0.0.1:18789/healthz && curl -fsS http://127.0.0.1:18789/readyz`. `readyz` is `false` until every configured channel is connected. After step 4 sets `gateway.trustedProxies`, curls from the host get `403 proxy_attribution_required` (a hand-added `X-Forwarded-For` does not help). Probe from inside the container instead: `docker compose exec -T openclaw-gateway sh -c 'wget -qO- http://127.0.0.1:18789/readyz || node -e "fetch(\"http://127.0.0.1:18789/readyz\").then(r=>r.text()).then(console.log)"'`, or through the Tailscale/Caddy URL.
 8b. **Model check without a chat channel.** `docker compose exec -T openclaw-gateway node dist/index.js agent -m 'Reply with exactly: OK' --json`; the `executionTrace` shows provider, model and `result: success`.
-9. **Hand over the token.** Tell the person: open the UI URL, open Settings, paste the value of `OPENCLAW_GATEWAY_TOKEN` from `.env`. They read it from the file themselves; you do not print it.
+9. **Hand over the token, then approve their device.** Tell the person: open the UI URL, open Settings, paste the gateway token (it is on their handoff sheet). After they paste it the UI waits on a **device pairing** request; nothing in the docs says so. List and approve it:
+   ```
+   docker compose exec -T openclaw-gateway node dist/index.js devices list --json
+   docker compose exec -T openclaw-gateway node dist/index.js devices approve <requestId>
+   ```
+   Check `remoteIp` and `deviceFamily` match the person's own device before approving. Each new browser or phone repeats this once.
 10. **Record** the image digest: `docker compose images`.
 
 Day-two CLI use: `docker compose run --rm openclaw-cli <command>` (the `cli` profile keeps it out of `up -d`). Doctor: `docker compose run --rm openclaw-cli doctor --fix`.

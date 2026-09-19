@@ -13,3 +13,6 @@ docker compose exec -T openclaw-gateway node dist/index.js config set channels.t
 To let anyone DM it (not recommended): `config set channels.telegram.dmPolicy open`.
 
 Check: the new person sends a message and gets a reply; a stranger still gets nothing.
+
+## A new browser or phone for the OpenClaw control UI
+Every new device has to be paired once, even the owner's. After they paste the gateway token, run `docker compose exec -T openclaw-gateway node dist/index.js devices list --json`, confirm the `remoteIp` is theirs, then `devices approve <requestId>`. `devices reject <requestId>` for anything you do not recognise.
