@@ -7,7 +7,7 @@ This is not an app. It is a folder your coding agent walks. The structure is the
 ## Get it
 
 ```
-git clone https://github.com/<this repo>.git
+git clone https://github.com/Michael-Rathgeb/7-Figure-CEO.git
 cd "7 Figure CEO"
 claude        # or: codex
 ```
